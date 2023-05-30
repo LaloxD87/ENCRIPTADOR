@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width-device-width">
+        <title>Encriptador</title>
+		<link rel="stylesheet" href="reset.css">
+		<link rel="stylesheet" href="style.css">
+
+    </head>
+
+    <body>
+        
+        <header>
+            <h1><img src="imagenes/Vector.png" class="logos" alt="Logo pagina"></h1>
+        </header>
+
+        <main>
+            
+            <section>
+
+                <textarea class="input" cols="70" rows="10" placeholder="Ingrese el texto aqui" required=""></textarea>
+
+                <div>
+                    <label class="mensaje">Solo letras minusculas y sin acentos</label>
+                </div>
+
+                <div class="botones">
+
+                    <button class="boton_encriptar" onclick="btnEncriptar()">Encriptar</button>
+                    <button class="boton_desencriptar" onclick="btnDesencriptar()">Desencriptar</button>
+                </div>
+
+            </section>
+
+            <section>
+
+                <textarea class="output" cols="70" rows="10" ></textarea>
+
+                <div>
+                    <button class="boton_copiar" onclick="btnCopiar()">Copiar</button>
+                </div>
+
+            </section>
+                
+        </main>  
+        
+        <script>
+
+            const input = document.querySelector(".input");
+            const output = document.querySelector(".output");
+            const copia = document.querySelector(".boton_copiar");
+
+            //SE VALIDA TEXTO
+            function validarTexto(){
+
+            let textoEscrito = document.querySelector(".input").value;
+            let validador = textoEscrito.match(/^[a-z]*$/);
+
+            if(!validador || validador === 0) {
+                alert("Solo son permitidas letras minúsculas y sin acentos")
+                location.reload();
+                return true;
+                }
+            }
+            //FUNCION PARA EL BOTON ECRIPTAR
+            function btnEncriptar(){
+
+                if(!validarTexto()) {
+
+                const textoEncriptado = encriptar(input.value)
+                output.value = textoEncriptado
+                output.style.backgroundImage = "none"
+                input.value = "";
+                copia.style.display = "block"
+                }
+            }
+            //FUNCION DE ENCRIPTACION
+            function encriptar(stringEncriptada){
+                let matrizCodigo = [["e", "enter"], ["i", "imes"], ["a", "ai"], ["o", "ober"], ["u", "ufat"]];
+                stringEncriptada = stringEncriptada.toLowerCase()
+
+                for(let i = 0; i < matrizCodigo.length; i++){
+                    if(stringEncriptada.includes(matrizCodigo[i][0])){
+                    stringEncriptada = stringEncriptada.replaceAll(matrizCodigo[i][0], matrizCodigo[i][1])
+                    }
+
+                }
+                return stringEncriptada
+            }
+            //FUNCION PARA BOTON DESENCRIPTAR
+            function btnDesencriptar(){
+                const textoEncriptado = desencriptar(input.value)
+                output.value = textoEncriptado
+                input.value = "";
+    
+            }
+
+            //FUNCION DE DESENCRIPTADO
+            function desencriptar(stringDesencriptada){
+                let matrizCodigo = [["e", "enter"], ["i", "imes"], ["a", "ai"], ["o", "ober"], ["u", "ufat"]];
+                stringDesencriptada = stringDesencriptada.toLowerCase()
+
+                    for(let i = 0; i < matrizCodigo.length; i++){
+                        if(stringDesencriptada.includes(matrizCodigo[i][1])){
+                            stringDesencriptada = stringDesencriptada.replaceAll(matrizCodigo[i][1] , matrizCodigo[i][0])
+                        }
+                    }
+                    return stringDesencriptada
+            }
+            //FUNCION PARA BOTON COPIAR
+            function btnCopiar(){
+                output.select();
+                navigator.clipboard.writeText(output.value)
+                output.value = "";
+                alert("Texto Copiado")
+            }
+        </script>
+        
+    </body>
+
+
+</html>
